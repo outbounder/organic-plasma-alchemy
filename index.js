@@ -34,7 +34,7 @@ module.exports = function (originalPlasma) {
             $feedback_timestamp: c.$feedback_timestamp,
             err: err,
             result: result
-          }, next)
+          })
         })
       }
     }
