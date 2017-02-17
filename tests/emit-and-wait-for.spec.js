@@ -29,7 +29,7 @@ describe('emit and wait for async listeners (handler.length > 0) to call back', 
   it('define two more listeners, first without callback', function (done) {
     handled = 0
 
-    instance.on('another', function () {
+    instance.on('another', function (c) {
       handled += 1
     })
     instance.on('another', function (c, next) {

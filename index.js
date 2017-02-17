@@ -26,7 +26,7 @@ module.exports = function (originalPlasma) {
 
     var reactionFn = handler
     if (handler.length === 2) { // has callback
-      reactionFn = function (c) {
+      reactionFn = function (c, next) {
         var chemicalType = c.type
         return handler.call(context, c, function (err, result) {
           originalPlasma.emit({
@@ -34,7 +34,7 @@ module.exports = function (originalPlasma) {
             $feedback_timestamp: c.$feedback_timestamp,
             err: err,
             result: result
-          })
+          }, next)
         })
       }
     }
@@ -57,7 +57,7 @@ module.exports = function (originalPlasma) {
       var waitForListenersCount = 0
       for (var i = 0, len = this.listeners.length; i < len; i++) {
         var listener = this.listeners[i]
-        if (listener.handler && listener.handler.length > 0) {
+        if (listener.handler && listener.handler.length === 2) {
           if (deepEqual(listener.pattern, chemical)) {
             waitForListenersCount++
           }
