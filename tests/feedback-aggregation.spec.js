@@ -2,10 +2,10 @@ var Plasma = require('organic-plasma')
 
 describe('feedback aggregation', function () {
   var instance = require('../index')(new Plasma())
-  var handled = 0
-  var emitCallbackCalled = false
 
   it('multiple listeners returning true are not hit simultaniously', function (done) {
+    var handled = 0
+
     instance.on('simultanious', function (c, next) {
       handled += 1
       next(null, 1)
@@ -19,17 +19,11 @@ describe('feedback aggregation', function () {
 
     instance.emit('simultanious', function (err, result) {
       if (err) return done(err)
-      emitCallbackCalled = true
+      expect(result).toBe(1)
+      setTimeout(function () {
+        expect(handled).toBe(1)
+        return done()
+      }, 100)
     })
-
-    done()
-  })
-
-  it('emit callback should not be called', function (done) {
-    setTimeout(function () {
-      expect(emitCallbackCalled).toBe(false)
-      expect(handled).toBe(1)
-      done()
-    }, 100)
   })
 })

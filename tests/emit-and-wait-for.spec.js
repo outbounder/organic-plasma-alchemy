@@ -18,9 +18,9 @@ describe('emit and wait for async listeners (handler.length > 0) to call back', 
   })
 
   it('emit', function (done) {
-    instance.emit('kill', function (err, result) {
+    instance.emitAndWaitAll('kill', function (err, result) {
       if (err) return done(err)
-      expect(result).toBe(2)
+      expect(result).toEqual([1, 2])
       expect(handled).toBe(2)
       done()
     })
@@ -39,10 +39,10 @@ describe('emit and wait for async listeners (handler.length > 0) to call back', 
     done()
   })
 
-  it('emit', function (done) {
-    instance.emit('another', function (err, result) {
+  it('emit again', function (done) {
+    instance.emitAndWaitAll('another', function (err, result) {
       if (err) return done(err)
-      expect(result).toBe(2)
+      expect(result).toEqual([2])
       expect(handled).toBe(2)
       done()
     })
@@ -61,8 +61,8 @@ describe('emit and wait for async listeners (handler.length > 0) to call back', 
     done()
   })
 
-  it('emit', function (done) {
-    instance.emit('again', function (err, result) {
+  it('and emit again', function (done) {
+    instance.emitAndWaitAll('again', function (err, result) {
       if (err) return done(err)
       emitCallbackCalled = true
     })
